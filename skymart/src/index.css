@@ -1,0 +1,34 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: "ClashDisplay";
+  src: url("/fonts/clash-fonts.woff2");
+}
+
+@font-face {
+  font-family: "GeneralSans";
+  src: url("/fonts/general-sans.woff2");
+}
+
+
+@theme {
+  --font-general: "GeneralSans", sans-serif;
+  --font-clash: "ClashDisplay", sans-serif;
+}
+
+
+
+
+html, body{
+  font-family: "GeneralSans";
+  background-color: #0E0E0E;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+
+html::-webkit-scrollbar, body::-webkit-scrollbar {
+  display: none;
+}
+
+
