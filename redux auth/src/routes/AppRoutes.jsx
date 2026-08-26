@@ -1,30 +1,69 @@
-import React from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import React, { useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+
 import AuthLayout from "../layout/AuthLayout";
 import MainLayout from "../layout/MainLayout";
 import HomePage from "../pages/HomePage";
 import LoginPage from "../pages/LoginPage";
 import RegisterPage from "../pages/RegisterPage";
+import { addUser } from "../features/authSlice";
+import PublicProtected from "./protected/PublicProtected";
+import MainProtected from "./protected/MainProtected";
+
 const AppRoutes = () => {
-  let router = createBrowserRouter([
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+
+    if (!storedUser) {
+      return;
+    }
+
+    try {
+      const loggedInUser = JSON.parse(storedUser);
+      dispatch(addUser(loggedInUser));
+    } catch (error) {
+      console.error("Invalid user data in localStorage:", error);
+      localStorage.removeItem("user");
+      toast.error("Invalid user session");
+    }
+  }, [dispatch]);
+
+  const router = createBrowserRouter([
     {
       path: "/",
-      element: <AuthLayout />,
+      element: <PublicProtected />,
       children: [
         {
           path: "",
-          element: <LoginPage />,
+          element: <AuthLayout />,
+          children: [
+            {
+              index: true,
+              element: <LoginPage />,
+            },
+            {
+              path: "register",
+              element: <RegisterPage />,
+            },
+          ],
         },
+      ],
+    },
+
+    {
+      path: "/main",
+      element: <MainProtected />,
+      children: [
         {
-          path: "/register",
-          element: <RegisterPage />,
-        },
-        {
-          path: "/main",
+          path: "",
           element: <MainLayout />,
           children: [
             {
-              path: "",
+              index: true,
               element: <HomePage />,
             },
           ],
