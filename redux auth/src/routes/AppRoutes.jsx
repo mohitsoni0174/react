@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { useEffect } from "react";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 
@@ -11,6 +11,8 @@ import RegisterPage from "../pages/RegisterPage";
 import { addUser } from "../features/authSlice";
 import PublicProtected from "./protected/PublicProtected";
 import MainProtected from "./protected/MainProtected";
+import ShopPage from "../pages/ShopPage";
+import AboutPage from "../pages/AboutPage";
 
 const AppRoutes = () => {
   const dispatch = useDispatch();
@@ -63,8 +65,16 @@ const AppRoutes = () => {
           element: <MainLayout />,
           children: [
             {
-              index: true,
+              path: "",
               element: <HomePage />,
+            },
+            {
+              path: "shop",
+              element: <ShopPage />,
+            },
+            {
+              path: "about",
+              element: <AboutPage />,
             },
           ],
         },
